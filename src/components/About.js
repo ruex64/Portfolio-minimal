@@ -1,63 +1,51 @@
-import React, { useState, useEffect } from "react";
-import { RoughNotation, RoughNotationGroup } from "react-rough-notation";
+import React, { useEffect, useRef } from "react";
 
 const About = () => {
-  const [loop, setLoop] = useState(false);
+  const textRef1 = useRef(null);
+  const textRef2 = useRef(null);
 
   useEffect(() => {
-    // Restart animation every few seconds to loop infinitely
-    const interval = setInterval(() => {
-      setLoop((prev) => !prev);
-    }, 3000); // Restart animation every 3 seconds
+    if (window.RoughNotation) {
+      const { annotate } = window.RoughNotation;
 
-    return () => clearInterval(interval);
+      // Create annotations
+      const underlineAnnotation = annotate(textRef1.current, { 
+        type: "underline", 
+        color: "#FFD700", 
+        strokeWidth: 3 
+      });
+
+      const circleAnnotation = annotate(textRef2.current, { 
+        type: "circle", 
+        color: "#FFD700", 
+        strokeWidth: 3 
+      });
+
+      // Show annotations
+      underlineAnnotation.show();
+      setTimeout(() => circleAnnotation.show(), 1000);
+
+      // Infinite Loop Animation
+      setInterval(() => {
+        underlineAnnotation.hide();
+        circleAnnotation.hide();
+        setTimeout(() => {
+          underlineAnnotation.show();
+          setTimeout(() => circleAnnotation.show(), 1000);
+        }, 1000);
+      }, 4000);
+    }
   }, []);
 
   return (
     <section id="about" className="section fade-in">
       <h2>About Me</h2>
-      <RoughNotationGroup show={loop}>
-        <p>
-          <RoughNotation 
-            type="underline" 
-            color="#FFD700" 
-            padding={4} 
-            strokeWidth={3} 
-            animationDuration={1000} 
-            iterations={1} 
-          >
-            <span className="annotated-text">Hi there! I’m a college student</span>
-          </RoughNotation>
-          &nbsp;and a&nbsp;
-          <RoughNotation 
-            type="circle" 
-            color="#FFD700" 
-            padding={6} 
-            strokeWidth={3} 
-            animationDuration={1200} 
-            iterations={1} 
-          >
-            <span className="annotated-text">Full Stack MERN Developer</span>
-          </RoughNotation>  
-          &nbsp;with a passion for UI/UX design.
-        </p>
-        <p>
-          I specialize in&nbsp;
-          <RoughNotation 
-            type="underline" 
-            color="#FFD700" 
-            padding={4} 
-            strokeWidth={3} 
-            animationDuration={1000} 
-            iterations={1} 
-          >
-            <span className="annotated-text">ReactJS, NodeJS, MongoDB, and Express</span>
-          </RoughNotation>, creating dynamic web applications.
-        </p>
-        <p>
-          Currently, I’m enhancing my skills in UI/UX to deliver user-friendly digital experiences.
-        </p>
-      </RoughNotationGroup>
+      <p>
+        <span ref={textRef1} className="annotated-text">Hi there! I’m a college student</span>
+        &nbsp;and a&nbsp;
+        <span ref={textRef2} className="annotated-text">Full Stack MERN Developer</span>  
+        &nbsp;with a passion for UI/UX design.
+      </p>
     </section>
   );
 };
