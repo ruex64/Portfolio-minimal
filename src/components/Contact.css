@@ -1,0 +1,27 @@
+/* Contact Section */
+#contact {
+    text-align: center;
+    padding: 80px 20px;
+  }
+  
+  /* Contact Icons Container */
+  .contact-icons {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-top: 20px;
+  }
+  
+  /* Contact Icon Styling */
+  .contact-icon i {
+    font-size: 3rem; /* Increased size */
+    color: #E0E0E0; /* Gold color for better contrast */
+    transition: transform 0.3s ease-in-out, color 0.3s ease-in-out;
+  }
+  
+  /* Hover Effect */
+  .contact-icon:hover i {
+    transform: scale(1.2); /* Slight zoom effect */
+    color: #E0C200; /* Darker gold on hover */
+  }
+  
